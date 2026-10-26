@@ -1,0 +1,105 @@
+taxis_comunidad_de_madrid = read.csv2("flotataxismadrid.csv")
+
+
+taxis_filtrados_comunidad_de_madrid = taxis_comunidad_de_madrid[(taxis_comunidad_de_madrid$Marca == "TOYOTA" | taxis_comunidad_de_madrid$Marca == "SKODA"), ]
+marca_del_coche = taxis_filtrados_comunidad_de_madrid$Marca
+potencia_del_coche = taxis_filtrados_comunidad_de_madrid$Potencia
+potencia_toyota = taxis_filtrados_comunidad_de_madrid$Potencia[taxis_filtrados_comunidad_de_madrid$Marca == "TOYOTA"]
+potencia_skoda = taxis_filtrados_comunidad_de_madrid$Potencia[taxis_filtrados_comunidad_de_madrid$Marca == "SKODA"]
+
+
+
+
+#Medidas de la muestra global
+mean(potencia_del_coche, na.rm = TRUE)
+median(potencia_del_coche, na.rm = TRUE)
+sd(potencia_del_coche, na.rm = TRUE)
+var(potencia_del_coche, na.rm = TRUE)
+range(potencia_del_coche, na.rm = TRUE)
+cv_global = sd(potencia_del_coche, na.rm = TRUE) / mean(potencia_del_coche, na.rm = TRUE)
+
+quantile(potencia_del_coche, 0.25, type = 2, na.rm = TRUE)
+quantile(potencia_del_coche, 0.50, type = 2, na.rm = TRUE)
+quantile(potencia_del_coche, 0.75, type = 2, na.rm = TRUE)
+IQR(potencia_del_coche, type = 2, na.rm = TRUE)
+
+if (!require("e1071")) install.packages("e1071")
+library(e1071)
+skewness(potencia_del_coche, type = 3, na.rm = TRUE)
+kurtosis(potencia_del_coche, type = 3, na.rm = TRUE)
+
+
+
+
+# Medidas de la marca TOYOTA
+mean(potencia_toyota, na.rm = TRUE)
+median(potencia_toyota, na.rm = TRUE)
+sd(potencia_toyota, na.rm = TRUE)
+var(potencia_toyota, na.rm = TRUE)
+range(potencia_toyota, na.rm = TRUE)
+cv_toyota = sd(potencia_toyota, na.rm = TRUE) / mean(potencia_toyota, na.rm = TRUE)
+
+quantile(potencia_toyota, 0.25, type = 2, na.rm = TRUE)
+quantile(potencia_toyota, 0.50, type = 2, na.rm = TRUE)
+quantile(potencia_toyota, 0.75, type = 2, na.rm = TRUE)
+IQR(potencia_toyota, type = 2, na.rm = TRUE)
+
+if (!require("e1071")) install.packages("e1071")
+library(e1071)
+skewness(potencia_toyota, type = 3, na.rm = TRUE)
+kurtosis(potencia_toyota, type = 3, na.rm = TRUE)
+
+
+
+
+#Medidas de la marca SKODA
+mean(potencia_skoda, na.rm = TRUE)
+median(potencia_skoda, na.rm = TRUE)
+sd(potencia_skoda, na.rm = TRUE)
+var(potencia_skoda, na.rm = TRUE)
+range(potencia_skoda, na.rm = TRUE)
+cv_skoda = sd(potencia_skoda, na.rm = TRUE) / mean(potencia_skoda, na.rm = TRUE)
+
+quantile(potencia_skoda, 0.25, type = 2, na.rm = TRUE)
+quantile(potencia_skoda, 0.50, type = 2, na.rm = TRUE)
+quantile(potencia_skoda, 0.75, type = 2, na.rm = TRUE)
+IQR(potencia_skoda, type = 2, na.rm = TRUE)
+
+if (!require("e1071")) install.packages("e1071")
+library(e1071)
+skewness(potencia_skoda, type = 3, na.rm = TRUE)
+kurtosis(potencia_skoda, type = 3, na.rm = TRUE)
+
+
+
+
+summary(potencia_del_coche)
+
+
+tapply(potencia_del_coche, marca_del_coche, mean, na.rm = TRUE)
+tapply(potencia_del_coche, marca_del_coche, median, na.rm = TRUE)
+tapply(potencia_del_coche, marca_del_coche, sd, na.rm = TRUE)
+tapply(potencia_del_coche, marca_del_coche, var, na.rm = TRUE)
+tapply(potencia_del_coche, marca_del_coche, IQR, type = 2, na.rm = TRUE)
+
+
+
+
+#Tablas y Diagramas
+tabla_contingencia = table(marca_del_coche, potencia_del_coche)
+prop.table(tabla_contingencia)
+
+if (!require("qcc")) install.packages("qcc")
+library (qcc)
+pareto.chart(potencia_del_coche, main = "Diagrama de pareto de potencia", xlab = "Nº de taxis", ylab = "Frecuencia")
+stem(potencia_del_coche, scale = 3)
+pie(tabla_contingencia, col =  "pink", density = c(5,10,15,30))
+
+hist(potencia_del_coche, main = "Histograma de Potencia", xlab = "CV/kW", ylab = "Nº de taxis", col = "green", border = "black")
+abline(v=mean(potencia_del_coche), lwd=2, lty=3, col="darkred")
+abline(v=median(potencia_del_coche), lwd=2, col="darkred")
+h=hist(potencia_del_coche, main = "Histograma de Potencia", xlab = "CV/kW", ylab = "Nº de taxis", col = "green", border = "black")
+lines(h$mids,h$counts, col="darkred", lwd=5)
+
+boxplot(potencia_del_coche ~ marca_del_coche, main = "Boxplot de Potencia según Marca del coche", xlab = "Marca del coche", ylab = "CV/kW", col = "blue", border = "black")
+barplot(tabla_contingencia, main = "Distribución de Potencia por Marca del coche", legend = TRUE, xlab = "CV/kW", ylab = "Número de taxis", border = "orange")
