@@ -38,7 +38,6 @@ A partir del análisis de las medidas estadísticas e intervalos de potencia, se
 
 * `Informe Estadístico - PL1 - Kratochvil Molpeceres Pablo.pdf`: Memoria formal del informe descriptivo completo.
 * `codigo_R/`: Scripts y comandos utilizados en RStudio para la depuración, cálculo de estadísticos, tablas de contingencia y generación de diagramas.
-* `graficos/`: Exportación de los histogramas, diagramas de tarta y boxplots generados en el análisis.
 
 ---
 
